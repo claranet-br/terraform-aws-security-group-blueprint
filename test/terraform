@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export AWS_REGION='us-east-1'
+
+terraform get
+terraform $@ -var "account=$AWS_ACCOUNT_ID"
