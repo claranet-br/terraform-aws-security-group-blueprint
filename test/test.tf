@@ -27,14 +27,35 @@ module "vpc" {
   ]
 }
 
-module "security_group" {
+module "security_group_1" {
   source      = "../"
 
-  name        = "${var.name}"
+  name        = "${var.name}-1"
   description = "A test security group"
   vpc         = "${module.vpc.vpc}"
 }
 
-/*output "security_group" {
-  value = "${module.security_group.security_group}"
-}*/
+module "security_group_2" {
+  source      = "../"
+
+  name        = "${var.name}-2"
+  description = "Another test security group"
+  vpc         = "${module.vpc.vpc}"
+  ingress_from_security_group = [
+    {
+      from_port = 80
+      to_port = 80
+      protocol = "tcp"
+      source_security_group_id = "${module.security_group_1.security_group["id"]}"
+    }
+  ]
+  ingress_from_security_group_count = 1
+}
+
+output "security_group_1" {
+  value = "${module.security_group_1.security_group}"
+}
+
+output "security_group_2" {
+  value = "${module.security_group_2.security_group}"
+}
