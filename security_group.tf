@@ -32,6 +32,17 @@ resource "aws_security_group_rule" "ingress_from_security_group" {
   count = "${var.ingress_from_security_group_count}"
 }
 
+resource "aws_security_group_rule" "ingress_from_cidr_blocks" {
+  security_group_id         = "${aws_security_group.security_group.id}"
+  type                      = "ingress"
+  protocol                  = "${lookup(var.ingress_from_cidr_blocks[count.index], "protocol")}"
+  from_port                 = "${lookup(var.ingress_from_cidr_blocks[count.index], "from_port")}"
+  to_port                   = "${lookup(var.ingress_from_cidr_blocks[count.index], "to_port")}"
+  cidr_blocks               = ["${split(",", lookup(var.ingress_from_cidr_blocks[count.index], "cidr_blocks"))}"]
+
+  count = "${var.ingress_from_cidr_blocks_count}"
+}
+
 output "security_group" {
   value = {
     id = "${aws_security_group.security_group.id}"
