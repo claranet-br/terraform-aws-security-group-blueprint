@@ -84,10 +84,27 @@ module "security_group_2" {
   ingress_from_cidr_blocks_count = 2
 }
 
+module "security_group_3" {
+  source      = "../"
+
+  name          = "${var.name}-3"
+  description   = "A test security group"
+  vpc           = "${module.vpc.vpc}"
+  egress_enable = false
+  tags          = "${map(
+    "TestKey1", "TestValue1",
+    "TestKey2", "TestValue2"
+  )}"
+}
+
 output "security_group_1" {
   value = "${module.security_group_1.security_group}"
 }
 
 output "security_group_2" {
   value = "${module.security_group_2.security_group}"
+}
+
+output "security_group_3" {
+  value = "${module.security_group_3.security_group}"
 }
