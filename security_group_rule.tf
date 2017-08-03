@@ -30,3 +30,14 @@ resource "aws_security_group_rule" "ingress_from_cidr_blocks" {
 
   count = "${var.ingress_from_cidr_blocks_count}"
 }
+
+resource "aws_security_group_rule" "ingress_from_self" {
+  security_group_id = "${aws_security_group.security_group.id}"
+  type              = "ingress"
+  protocol          = "${lookup(var.ingress_from_self[count.index], "protocol")}"
+  from_port         = "${lookup(var.ingress_from_self[count.index], "from_port")}"
+  to_port           = "${lookup(var.ingress_from_self[count.index], "to_port")}"
+  self              = true
+
+  count = "${var.ingress_from_self_count}"
+}

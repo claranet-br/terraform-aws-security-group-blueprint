@@ -31,6 +31,16 @@ variable "ingress_from_cidr_blocks_count" {
   default = 0
 }
 
+variable "ingress_from_self" {
+  type    = "list"
+  default = []
+}
+
+variable "ingress_from_self_count" {
+  type    = "string"
+  default = 0
+}
+
 variable "egress_enable" {
   type    = "string"
   default = true
